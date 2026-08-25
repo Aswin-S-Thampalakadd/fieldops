@@ -63,10 +63,10 @@ export interface CreateJobInput {
   };
   location: {
     coordinates: [number, number];
-    address: string;
+    address?: string;
   };
-  scheduledDate?: string;
-  priority: "LOW" | "MEDIUM" | "HIGH" | "URGENT";
+  scheduledAt?: string;
+  priority?: "LOW" | "MEDIUM" | "HIGH" | "URGENT";
 }
 
 // types/job.types.ts
