@@ -115,6 +115,25 @@ export class JobsService {
     return this.toResponse(job);
   }
 
+  async jobsCountByStatus() {
+    const result = await this.jobModel.aggregate([
+      {
+        $group: {
+          _id: '$status',
+          count: { $sum: 1 },
+        },
+      },
+    ]);
+
+    return result.reduce(
+      (acc, item) => {
+        acc[item._id] = item.count;
+        return acc;
+      },
+      {} as Record<string, number>,
+    );
+  }
+
   async assign(jobId: string, technicianId: string) {
     const technician = await this.usersService.findById(technicianId);
 
