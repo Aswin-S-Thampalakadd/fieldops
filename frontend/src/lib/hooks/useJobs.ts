@@ -157,6 +157,41 @@ export function useGetJobStatusCounts() {
   });
 }
 
+export function useAssignJob() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: ({
+      jobId,
+      technicianId,
+    }: {
+      jobId: string;
+      technicianId: string;
+    }) => jobsService.assignJob(jobId, technicianId),
+
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ["jobs"],
+      });
+    },
+  });
+}
+
+export function useCancelJob() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (jobId: string) => jobsService.cancelJob(jobId),
+
+    onSuccess: () => {
+      // Refresh the jobs list after cancellation
+      queryClient.invalidateQueries({
+        queryKey: ["jobs"],
+      });
+    },
+  });
+}
+
 export function useDebounce<T>(value: T, delay: number): T {
   const [debouncedValue, setDebouncedValue] = useState<T>(value);
 
