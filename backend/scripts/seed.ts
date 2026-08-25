@@ -365,7 +365,7 @@ async function seedJobs(
       completionPhotos,
     });
 
-    jobs.push(job);
+     jobs.push(job);
   }
 
   console.log(`Created ${jobs.length} jobs`);

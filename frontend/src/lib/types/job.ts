@@ -68,3 +68,118 @@ export interface CreateJobInput {
   scheduledDate?: string;
   priority: "LOW" | "MEDIUM" | "HIGH" | "URGENT";
 }
+
+// types/job.types.ts
+
+export interface Customer {
+  name: string;
+  phone: string;
+  address: string;
+  email: string;
+}
+
+export type JobLocation = {
+  type: "Point";
+  address: string;
+  coordinates: [number, number]; // [longitude, latitude]
+};
+
+export interface TechnicianRef {
+  id: string;
+  name: string;
+  email: string;
+}
+
+export type JobStatus =
+  | "ASSIGNED"
+  | "IN_PROGRESS"
+  | "PENDING"
+  | "COMPLETED"
+  | "CANCELLED";
+
+export interface Job {
+  id: string;
+  title: string;
+  description: string;
+  customer: Customer;
+  location: JobLocation;
+  status: JobStatus;
+  technician: TechnicianRef | null;
+  scheduledAt: string | null;
+  startedAt: string | null;
+  completedAt: string | null;
+  completionNotes: string | null;
+  completionPhotos: string[];
+  createdAt: string;
+  updatedAt: string;
+}
+
+// For API responses with pagination
+export interface JobsResponse {
+  jobs: Job[];
+  total: number;
+  page: number;
+  limit: number;
+  totalPages: number;
+}
+
+// For create/update job payloads
+export interface CreateJobPayload {
+  title: string;
+  description?: string;
+  customer: {
+    name: string;
+    phone: string;
+    address: string;
+  };
+  location: {
+    latitude: number;
+    longitude: number;
+  };
+  technicianId?: string;
+  scheduledAt?: string;
+}
+
+export interface UpdateJobPayload {
+  title?: string;
+  description?: string;
+  customer?: {
+    name?: string;
+    phone?: string;
+    address?: string;
+  };
+  location?: {
+    latitude?: number;
+    longitude?: number;
+  };
+  status?: JobStatus;
+  technicianId?: string | null;
+  scheduledAt?: string | null;
+  startedAt?: string | null;
+  completedAt?: string | null;
+  completionNotes?: string | null;
+  completionPhotos?: string[];
+}
+
+// For job status counts
+export interface JobStatusCounts {
+  ASSIGNED: number;
+  IN_PROGRESS: number;
+  PENDING: number;
+  COMPLETED: number;
+  CANCELLED: number;
+}
+
+// For job filters/query params
+export interface JobFilters {
+  status?: JobStatus;
+  technicianId?: string;
+  customerName?: string;
+  startDate?: string;
+  endDate?: string;
+  search?: string;
+  page?: number;
+  limit?: number;
+  sortBy?: "createdAt" | "scheduledAt" | "status" | "title";
+  sortOrder?: "asc" | "desc";
+}
