@@ -14,13 +14,6 @@ import {
   CardTitle,
 } from "@/src/components/ui/Card";
 import { Input } from "@/src/components/ui/Input";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/src/components/ui/Select";
 import { LoadingSpinner } from "@/src/components/shared/LoadingSpinner";
 import "./CreateJobPage.css";
 
@@ -31,11 +24,9 @@ const createJobSchema = z.object({
   customerEmail: z.string().email("Invalid email address"),
   customerPhone: z.string().min(10, "Phone number is required"),
   address: z.string().min(5, "Address is required"),
-  locationAddress: z.string().min(5, "Location address is required"),
   latitude: z.string().transform((val) => parseFloat(val)),
   longitude: z.string().transform((val) => parseFloat(val)),
-  scheduledDate: z.string().optional(),
-  priority: z.enum(["LOW", "MEDIUM", "HIGH", "URGENT"]),
+  scheduledAt: z.string().min(1, "Scheduled date is required"),
 });
 
 type CreateJobFormData = z.infer<typeof createJobSchema>;
@@ -48,13 +39,8 @@ export default function CreateJobPage() {
     register,
     handleSubmit,
     formState: { errors },
-    setValue,
-    watch,
   } = useForm<CreateJobFormData>({
     resolver: zodResolver(createJobSchema),
-    defaultValues: {
-      priority: "MEDIUM",
-    },
   });
 
   const onSubmit = async (data: CreateJobFormData) => {
@@ -69,10 +55,9 @@ export default function CreateJobPage() {
       },
       location: {
         coordinates: [data.longitude, data.latitude],
-        address: data.locationAddress,
       },
-      priority: data.priority,
-      scheduledDate: data.scheduledDate,
+      scheduledAt: data.scheduledAt,
+      priority: "MEDIUM",
     };
 
     await createJob(jobData);
@@ -82,19 +67,24 @@ export default function CreateJobPage() {
   return (
     <div className="create-job-container">
       <div className="create-job-header">
-        <h1 className="create-job-title">Create New Job</h1>
+        <div>
+          <h1 className="create-job-title">Create New Job</h1>
+          <p className="create-job-subtitle">
+            Fill in the details to schedule a new job
+          </p>
+        </div>
         <Button variant="outline" onClick={() => router.back()}>
           Cancel
         </Button>
       </div>
 
       <form onSubmit={handleSubmit(onSubmit)} className="create-job-form">
-        <Card>
+        <Card className="form-card">
           <CardHeader>
             <CardTitle>Job Information</CardTitle>
           </CardHeader>
           <CardContent className="card-content">
-            <div>
+            <div className="form-field">
               <label className="form-label">Title</label>
               <Input
                 {...register("title")}
@@ -105,11 +95,11 @@ export default function CreateJobPage() {
               )}
             </div>
 
-            <div>
+            <div className="form-field">
               <label className="form-label">Description</label>
               <textarea
                 {...register("description")}
-                rows={3}
+                rows={4}
                 className="form-textarea"
                 placeholder="Detailed description of the job..."
               />
@@ -118,42 +108,22 @@ export default function CreateJobPage() {
               )}
             </div>
 
-            <div className="form-grid">
-              <div>
-                <label className="form-label">Priority</label>
-                <Select
-                  onValueChange={(value) => setValue("priority", value as any)}
-                  defaultValue="MEDIUM"
-                >
-                  <SelectTrigger>
-                    <SelectValue placeholder="Select priority" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="LOW">Low</SelectItem>
-                    <SelectItem value="MEDIUM">Medium</SelectItem>
-                    <SelectItem value="HIGH">High</SelectItem>
-                    <SelectItem value="URGENT">Urgent</SelectItem>
-                  </SelectContent>
-                </Select>
-                {errors.priority && (
-                  <p className="form-error">{errors.priority.message}</p>
-                )}
-              </div>
-
-              <div>
-                <label className="form-label">Scheduled Date</label>
-                <Input {...register("scheduledDate")} type="date" />
-              </div>
+            <div className="form-field">
+              <label className="form-label">Scheduled Date</label>
+              <Input {...register("scheduledAt")} type="datetime-local" />
+              {errors.scheduledAt && (
+                <p className="form-error">{errors.scheduledAt.message}</p>
+              )}
             </div>
           </CardContent>
         </Card>
 
-        <Card>
+        <Card className="form-card">
           <CardHeader>
             <CardTitle>Customer Information</CardTitle>
           </CardHeader>
           <CardContent className="card-content">
-            <div>
+            <div className="form-field">
               <label className="form-label">Full Name</label>
               <Input {...register("customerName")} placeholder="John Doe" />
               {errors.customerName && (
@@ -162,7 +132,7 @@ export default function CreateJobPage() {
             </div>
 
             <div className="form-grid">
-              <div>
+              <div className="form-field">
                 <label className="form-label">Email</label>
                 <Input
                   {...register("customerEmail")}
@@ -174,7 +144,7 @@ export default function CreateJobPage() {
                 )}
               </div>
 
-              <div>
+              <div className="form-field">
                 <label className="form-label">Phone</label>
                 <Input
                   {...register("customerPhone")}
@@ -186,7 +156,7 @@ export default function CreateJobPage() {
               </div>
             </div>
 
-            <div>
+            <div className="form-field">
               <label className="form-label">Address</label>
               <Input
                 {...register("address")}
@@ -199,24 +169,13 @@ export default function CreateJobPage() {
           </CardContent>
         </Card>
 
-        <Card>
+        <Card className="form-card">
           <CardHeader>
-            <CardTitle>Location</CardTitle>
+            <CardTitle>Location Coordinates</CardTitle>
           </CardHeader>
           <CardContent className="card-content">
-            <div>
-              <label className="form-label">Location Address</label>
-              <Input
-                {...register("locationAddress")}
-                placeholder="Business location address"
-              />
-              {errors.locationAddress && (
-                <p className="form-error">{errors.locationAddress.message}</p>
-              )}
-            </div>
-
             <div className="form-grid">
-              <div>
+              <div className="form-field">
                 <label className="form-label">Latitude</label>
                 <Input
                   {...register("latitude")}
@@ -229,7 +188,7 @@ export default function CreateJobPage() {
                 )}
               </div>
 
-              <div>
+              <div className="form-field">
                 <label className="form-label">Longitude</label>
                 <Input
                   {...register("longitude")}
