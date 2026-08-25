@@ -168,7 +168,7 @@ async function seedUsers() {
 
   await UserModel.deleteMany({});
 
-  const adminPasswordHash = await bcrypt.hash(ADMIN.password, 12);
+  const adminPasswordHash = await bcrypt.hash(ADMIN.password, 10);
 
   const admin = await UserModel.create({
     email: ADMIN.email,

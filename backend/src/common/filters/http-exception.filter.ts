@@ -11,6 +11,7 @@ import { Response } from 'express';
 @Catch()
 export class HttpExceptionFilter implements ExceptionFilter {
   catch(exception: unknown, host: ArgumentsHost) {
+    console.error('GLOBAL ERROR:', exception);  
     const context = host.switchToHttp();
 
     const response = context.getResponse<Response>();

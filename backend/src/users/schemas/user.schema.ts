@@ -23,7 +23,7 @@ export class User {
   @Prop({
     type: String,
     required: true,
-    select: false,
+    select: true,
   })
   passwordHash: string;
 
