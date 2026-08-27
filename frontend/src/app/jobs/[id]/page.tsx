@@ -26,14 +26,8 @@ export default function JobDetailPage({ params }: { params: { id: string } }) {
   const router = useRouter();
   const { data: job, isLoading, error } = useJob(params.id);
   const { data: technicians } = useTechnicians();
-  const {
-    assignJob,
-    unassignJob,
-    cancelJob,
-    assignLoading,
-    unassignLoading,
-    cancelLoading,
-  } = useJobs({ page: 1, limit: 10 });
+  const { assignJob, unassignJob, cancelJob, unassignLoading, cancelLoading } =
+    useJobs({ page: 1, limit: 10 });
 
   if (isLoading) {
     return (

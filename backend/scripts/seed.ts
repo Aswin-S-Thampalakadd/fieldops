@@ -223,18 +223,6 @@ async function seedJobs(
     _id: Types.ObjectId;
   }> = [];
 
-  /*
-   * Status distribution:
-   *
-   * 24 COMPLETED
-   * 5 ASSIGNED
-   * 3 IN_PROGRESS
-   * 5 PENDING
-   * 3 CANCELLED
-   *
-   * Total = 40
-   */
-
   const statuses: JobStatus[] = [
     ...Array(24).fill(JobStatus.COMPLETED),
 
@@ -256,10 +244,6 @@ async function seedJobs(
 
     const title = randomItem(JOB_TITLES);
 
-    /*
-     * Add small random geographic variation
-     * around the selected Bengaluru area.
-     */
     const latitude = location.latitude + randomNumber(-0.015, 0.015);
 
     const longitude = location.longitude + randomNumber(-0.015, 0.015);
@@ -276,20 +260,12 @@ async function seedJobs(
 
     let completionPhotos: string[] = [];
 
-    /*
-     * PENDING jobs intentionally have
-     * no technician.
-     */
     if (status !== JobStatus.PENDING) {
       const technician = randomItem(technicians);
 
       technicianId = technician._id;
     }
 
-    /*
-     * Completed jobs should have
-     * realistic timestamps.
-     */
     if (status === JobStatus.COMPLETED) {
       startedAt = addHours(createdAt, 24);
 
@@ -309,10 +285,6 @@ async function seedJobs(
       ];
     }
 
-    /*
-     * In-progress jobs have startedAt
-     * but no completedAt.
-     */
     if (status === JobStatus.IN_PROGRESS) {
       startedAt = addHours(
         createdAt,
@@ -320,12 +292,6 @@ async function seedJobs(
       );
     }
 
-    /*
-     * Scheduled date.
-     *
-     * Historical jobs get historical
-     * scheduled dates.
-     */
     const scheduledAt = addHours(createdAt, 24);
 
     const job = await JobModel.create({
@@ -365,7 +331,7 @@ async function seedJobs(
       completionPhotos,
     });
 
-     jobs.push(job);
+    jobs.push(job);
   }
 
   console.log(`Created ${jobs.length} jobs`);

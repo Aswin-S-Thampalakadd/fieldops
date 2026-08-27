@@ -6,11 +6,8 @@ import {
   IsIn,
   IsNotEmpty,
   IsNumber,
-  IsOptional,
   IsPhoneNumber,
   IsString,
-  Max,
-  Min,
   MinLength,
   ValidateNested,
 } from 'class-validator';
