@@ -34,7 +34,6 @@ export default function DashboardPage() {
     jobs,
     total,
     isLoading: isJobsLoading,
-    error,
   } = useJobs({ page: currentPage, limit: pageSize });
 
   const { data } = useGetJobStatusCounts();

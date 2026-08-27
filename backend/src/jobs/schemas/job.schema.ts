@@ -135,35 +135,15 @@ export class Job {
 
 export const JobSchema = SchemaFactory.createForClass(Job);
 
-/**
- * Geospatial index.
- *
- * Required for:
- * GET /jobs/nearby
- */
 JobSchema.index({
   location: '2dsphere',
 });
 
-/**
- * Main jobs list query.
- *
- * Useful for:
- * GET /jobs?status=COMPLETED
- * GET /jobs?technicianId=...
- * GET /jobs?from=...&to=...
- */
 JobSchema.index({
   status: 1,
   scheduledAt: -1,
 });
 
-/**
- * Technician job listing.
- *
- * Useful for:
- * GET /jobs/my
- */
 JobSchema.index({
   technicianId: 1,
   status: 1,

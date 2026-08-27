@@ -21,7 +21,6 @@ import { RolesGuard } from '../common/guards/roles.guard';
 import { Roles } from '../common/decorators/roles.decorator';
 
 import { Role } from '../common/enums/role.enum';
-import { JobStatus } from 'src/common/enums/job-status.enum';
 
 @Controller('jobs')
 @UseGuards(AccessTokenGuard, RolesGuard)
