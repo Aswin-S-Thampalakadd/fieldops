@@ -60,7 +60,6 @@ const HomeScreen = ({ navigation }) => {
     <SafeAreaView style={styles.container}>
       <StatusBar barStyle="dark-content" backgroundColor="#fff" />
 
-      {/* Header */}
       <View style={styles.header}>
         <TouchableOpacity onPress={openDrawer} style={styles.menuButton}>
           <Ionicons name="menu" size={28} color="#333" />
@@ -80,7 +79,6 @@ const HomeScreen = ({ navigation }) => {
       </View>
 
       <ScrollView showsVerticalScrollIndicator={false}>
-        {/* Stats Cards */}
         <View style={styles.statsContainer}>
           <View style={[styles.statCard, styles.activeCard]}>
             <Ionicons name="briefcase" size={28} color="#fff" />
@@ -101,7 +99,6 @@ const HomeScreen = ({ navigation }) => {
           </View>
         </View>
 
-        {/* Weekly Performance Chart */}
         <View style={styles.chartContainer}>
           <Text style={styles.sectionTitle}>Weekly Performance</Text>
           <LineChart
@@ -133,7 +130,6 @@ const HomeScreen = ({ navigation }) => {
           />
         </View>
 
-        {/* Upcoming Jobs */}
         <View style={styles.upcomingContainer}>
           <View style={styles.sectionHeader}>
             <Text style={styles.sectionTitle}>Upcoming Jobs</Text>
@@ -165,7 +161,6 @@ const HomeScreen = ({ navigation }) => {
           ))}
         </View>
 
-        {/* Quick Actions */}
         <View style={styles.quickActionsContainer}>
           <Text style={styles.sectionTitle}>Quick Actions</Text>
           <View style={styles.quickActionsGrid}>
