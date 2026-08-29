@@ -8,16 +8,12 @@ import {
   SafeAreaView,
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
-import {
-  DrawerContentScrollView,
-  DrawerItemList,
-} from "@react-navigation/drawer";
+import { DrawerContentScrollView } from "@react-navigation/drawer";
 
 const CustomDrawerContent = (props) => {
   return (
     <SafeAreaView style={styles.container}>
       <DrawerContentScrollView {...props}>
-        {/* User Profile Section */}
         <View style={styles.userInfoSection}>
           <View style={styles.userAvatar}>
             <Image
@@ -43,7 +39,6 @@ const CustomDrawerContent = (props) => {
           </View>
         </View>
 
-        {/* Drawer Items */}
         <View style={styles.drawerItems}>
           <TouchableOpacity style={styles.drawerItem}>
             <Ionicons name="home-outline" size={22} color="#333" />
@@ -76,7 +71,6 @@ const CustomDrawerContent = (props) => {
           </TouchableOpacity>
         </View>
 
-        {/* Logout Section */}
         <View style={styles.logoutSection}>
           <TouchableOpacity style={styles.logoutButton}>
             <Ionicons name="log-out-outline" size={22} color="#ff4444" />
